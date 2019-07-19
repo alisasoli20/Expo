@@ -1,5 +1,6 @@
 <?php
-
+use App\Shops;
+use App\Products;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -51,14 +52,12 @@ Route::group(['middleware' => ['auth', 'activated', 'activity', 'checkblocked']]
 Route::group(['middleware' => ['auth', 'activated', 'activity', 'twostep', 'checkblocked']], function () {
 
     //  Homepage Route - Redirect based on user role is in controller.
-    Route::get('/home', ['as' => 'public.home',   'uses' => 'UserController@index']);
+    Route::get('/dashboard', ['as' => 'public.dashboard',   'uses' => 'UserController@index']);
 
-    // Inventory Route - Redirect based on user role is in controller.
-    Route::get('/inventory', ['as'=>'public.inventory','uses'=>'ProductController@index']);
 
-    // Shop Route
-    Route::get('/shops', ['as'=>'public.shops','uses'=>'ShopController@index']);
-
+    // Shop Routes
+    Route::resource('shops', 'ShopController');
+    
     // Show users profile - viewable by other users.
     Route::get('profile/{username}', [
         'as'   => '{username}',
@@ -81,6 +80,7 @@ Route::group(['middleware' => ['auth', 'activated', 'currentUser', 'activity', '
             ],
         ]
     );
+
     Route::put('profile/{username}/updateUserAccount', [
         'as'   => '{username}',
         'uses' => 'ProfilesController@updateUserAccount',
@@ -120,6 +120,14 @@ Route::group(['middleware' => ['auth', 'activated', 'role:admin', 'activity', 't
             'deleted',
         ],
     ]);
+
+    
+    // Product Routes 
+    Route::resource('products', 'ProductController');
+
+    // Stock Routes
+    Route::resource('stocks', 'StockController');
+
     Route::post('search-users', 'UsersManagementController@search')->name('search-users');
 
     Route::resource('themes', 'ThemesManagementController', [

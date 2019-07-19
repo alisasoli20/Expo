@@ -4,9 +4,16 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Auth;
+use App\Shops;
+use App\Http\Requests\CreateShopRequest;
+use Illuminate\Support\Facades\DB;
 
 class ShopController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
     /**
      * Display a listing of the resource.
      *
@@ -16,7 +23,7 @@ class ShopController extends Controller
     {
         $user = Auth::user();
         if($user->isAdmin()){
-            return view('pages.admin.shops');
+            return view('pages.admin.shops.shops')->with('shops',Shops::all());
         }
     }
 
@@ -27,7 +34,10 @@ class ShopController extends Controller
      */
     public function create()
     {
-        //
+        $user = Auth::user();
+        if($user->isAdmin()){
+        return view('pages.admin.shops.newshop');
+        }
     }
 
     /**
@@ -36,9 +46,18 @@ class ShopController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(CreateShopRequest $request)
     {
-        //
+        Shops::create([
+            'Shop_Name'=>$request->shop_name,
+            'Shopkeeper_Name'=>$request->owner_name,
+            'street'=>$request->street,
+            'City'=>$request->city,
+            'Country'=>$request->country,
+            'Telephone_No'=>$request->number
+        ]);
+        session()->flash('status', 'Shop has been added successfully');
+        return redirect(route('shops.index'));
     }
 
     /**
@@ -58,9 +77,9 @@ class ShopController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Shops $shop)
     {
-        //
+        return view('pages.admin.shops.newshop')->with('shop',$shop);
     }
 
     /**
@@ -70,9 +89,18 @@ class ShopController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request,Shops $shop)
     {
-        //
+        $shop =  Shops::find($shop->id);
+        $shop->Shop_Name=$request->shop_name;
+        $shop->Shopkeeper_Name = $request->owner_name;
+        $shop->street = $request->street;
+        $shop->City= $request->city;
+        $shop->Country = $request->country;
+        $shop->Telephone_No = $request->number;
+        $shop->save();
+        session()->flash('status', 'Shop has been updated successfully');
+        return redirect(route('shops.index'));
     }
 
     /**
@@ -81,8 +109,11 @@ class ShopController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy( $id)
     {
-        //
+        $shop =Shops::where('id',$id);
+        $shop->delete();
+        session()->flash('status','Shop has been delete successfully');
+        return redirect(route('shops.index'));
     }
 }
