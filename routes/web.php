@@ -52,7 +52,7 @@ Route::group(['middleware' => ['auth', 'activated', 'activity', 'checkblocked']]
 Route::group(['middleware' => ['auth', 'activated', 'activity', 'twostep', 'checkblocked']], function () {
 
     //  Homepage Route - Redirect based on user role is in controller.
-    Route::get('/dashboard', ['as' => 'public.dashboard',   'uses' => 'UserController@index']);
+    Route::get('/home', ['as' => 'public.dashboard',   'uses' => 'UserController@index']);
 
 
     // Shop Routes
@@ -127,6 +127,22 @@ Route::group(['middleware' => ['auth', 'activated', 'role:admin', 'activity', 't
 
     // Stock Routes
     Route::resource('stocks', 'StockController');
+
+
+    //Orders Routes
+    Route::resource('orders','OrderController');
+
+    //Vans Routes
+    Route::resource('vans', 'VanController');
+
+    //Search Shop Routes
+    Route::get('/searchshop','OrderController@searchshop');
+
+    //Search Proucts From Stock Routes
+    Route::get('/searchproduct','OrderController@searchproduct');
+
+    // For live search
+    Route::get('/search','StockController@search');
 
     Route::post('search-users', 'UsersManagementController@search')->name('search-users');
 

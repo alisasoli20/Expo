@@ -39,6 +39,9 @@
             <a href="{{ route('products.create') }}" class="btn btn-md btn-primary">Add Product</a>
             </div>
           </div>
+          @if ($products->count()==0)
+              <div class="alert alert-info justify-content-center">No Any Product Available</div>
+          @else
           <!-- DataTales Example -->
           <div class="card shadow mb-4">
             <div class="card-header py-3">
@@ -102,6 +105,7 @@
               </div>
             </div>
           </div>
+          @endif
 
         </div>
         <!-- /.container-fluid -->

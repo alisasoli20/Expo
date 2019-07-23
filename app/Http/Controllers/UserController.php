@@ -29,7 +29,7 @@ class UserController extends Controller
             return view('pages.admin.dashboard');
         }
 
-        return view('pages.user.home');
+        return view('pages.admin.dashboard');
     }
     
 

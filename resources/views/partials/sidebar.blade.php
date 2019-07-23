@@ -1,11 +1,11 @@
 <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
 
     <!-- Sidebar - Brand -->
-    <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
+<a class="sidebar-brand d-flex align-items-center justify-content-center" href="{{ route('public.dashboard') }}">
         <div class="sidebar-brand-icon rotate-n-15">
             <i class="fas fa-laugh-wink"></i>
         </div>
-        <div class="sidebar-brand-text mx-3">SB Admin <sup>2</sup></div>
+        <div class="sidebar-brand-text mx-3">DMS</div>
     </a>
 
     <!-- Divider -->
@@ -32,9 +32,9 @@
             <div class="bg-white py-2 collapse-inner rounded">
                 <h6 class="collapse-header">New Entries</h6>
                 <a class="collapse-item" href="{{ route('shops.index') }}">Shops</a>
-                <a class="collapse-item" href="">Stock Purchase</a>
                 <a class="collapse-item" href="{{ route('products.index') }}">Products</a>
-                <a class="collapse-item" href="cards.html">Van Entry</a>
+                <a class="collapse-item" href="{{ route('stocks.index')  }}">Purchase Stock</a>
+            <a class="collapse-item" href="{{ route('vans.index') }}">Van Entry</a>
             </div>
         </div>
     </li>
@@ -44,15 +44,13 @@
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities"
             aria-expanded="true" aria-controls="collapseUtilities">
             <i class="fas fa-fw fa-wrench"></i>
-            <span>Utilities</span>
+            <span>Sales</span>
         </a>
         <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
                 <h6 class="collapse-header">Custom Utilities:</h6>
-                <a class="collapse-item" href="utilities-color.html">Colors</a>
-                <a class="collapse-item" href="utilities-border.html">Borders</a>
-                <a class="collapse-item" href="utilities-animation.html">Animations</a>
-                <a class="collapse-item" href="utilities-other.html">Other</a>
+            <a class="collapse-item" href="{{ route('orders.index') }}">Orders</a>
+                <a class="collapse-item" href="utilities-border.html">Show Stock</a>
             </div>
         </div>
     </li>

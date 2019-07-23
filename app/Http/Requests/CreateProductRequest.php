@@ -27,7 +27,10 @@ class CreateProductRequest extends FormRequest
             'product_name' => 'required|unique:products',
             'supplier'=>'required',
             'company_price'=>'required|numeric',
-
+            'selling_price'=>'required|numeric',
+            'cartons'=>'required|numeric',
+            'boxes'=>'numeric',
+            'pieces'=>'numeric'
         ];
     }
 }

@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Products;
+use App\Stocks;
 
 class StockController extends Controller
 {
@@ -13,7 +15,7 @@ class StockController extends Controller
      */
     public function index()
     {
-        //
+        return view('pages.admin.stocks.index')->with('stocks',Stocks::all());
     }
 
     /**
@@ -23,7 +25,7 @@ class StockController extends Controller
      */
     public function create()
     {
-        //
+        return view('pages.admin.stocks.create');
     }
 
     /**
@@ -34,7 +36,24 @@ class StockController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $stock = Stocks::where('products_id',$request->search)->first();    
+        if($stock->count()==0){
+        Stocks::create([
+            'products_id'=>$request->search,
+            'cartons'=>$request->s_cartons,
+            'boxes'=>$request->s_boxes,
+            'pieces'=>$request->s_pieces
+            ]);
+        }
+        else {
+            $stock->cartons+=$request->s_cartons;
+            $stock->boxes+= $request->s_boxes;
+            $stock->pieces+=$request->s_pieces;
+            $stock->save();
+        }
+
+        session()->flash('status','Product has been successfully Purchased');
+        return redirect(route('stocks.index'));
     }
 
     /**
@@ -56,7 +75,7 @@ class StockController extends Controller
      */
     public function edit($id)
     {
-        //
+        return view('pages.admin.stocks.edit');
     }
 
     /**
@@ -80,5 +99,21 @@ class StockController extends Controller
     public function destroy($id)
     {
         //
+    }
+    public function search(Request $request)
+    {
+        if($request->ajax()){
+            $id = $request->get('query');
+            $product = Products::findOrFail($id);
+            $product = array(
+                'name' => $product->product_name,
+                'c_price' => $product->company_price,
+                's_price' => $product->selling_price,
+                'cartons' => $product->cartons,
+                'boxes' => $product->boxes,
+                'pieces' => $product->pieces
+            );
+            return $product;
+        }
     }
 }
